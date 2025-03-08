@@ -1,51 +1,71 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
+
+// RUTA PRINCIPAL
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('caja.index');
 });
 
-Route::get('/inventario', function () {
-    return view('inventario');
-});
-
-Route::get('/caja', function () {
-    return view('caja');
-});
-
-Route::get('/historialv', function () {
-    return view('historialv');
-});
-
-Route::get('/proveedores', function () {
-    return view('proveedores');
-});
-
-Route::get('/envios', function () {
-    return view('envios');
-});
-
-Route::get('/pedidos', function () {
-    return view('pedidos');
-});
-
-Route::get('/reportes', function () {
-    return view('reportes');
-});
-
-Route::get('/modificarcli', function () {
-    return view('modificarcli');
-});
-
-Route::get('/membresias', function () {
-    return view('membresias');
-});
-
-Route::get('/planes', function () {
-    return view('planes');
-});
-
+// LOGIN
 Route::get('/login', function () {
     return view('login');
-});
+})->name('login');
+
+// CAJA
+Route::get('/caja', function () {
+    return view('caja');
+})->name('caja.index');
+
+// TICKETS
+Route::get('/tickets/nuevo', function () {
+    return view('nuevo_ticket');
+})->name('tickets.create');
+
+// DEVOLUCIONES
+Route::get('/devoluciones', function () {
+    return view('devoluciones');
+})->name('devoluciones.index');
+
+// PROVEEDORES
+Route::get('/proveedores', function () {
+    return view('proveedores');
+})->name('proveedores.index');
+
+// EMPLEADOS
+Route::get('/empleados', function () {
+    return view('empleados');
+})->name('empleados.index');
+
+// ENVÍOS
+Route::get('/envios', function () {
+    return view('envios');
+})->name('envios.index');
+
+// MEMBRESÍAS
+Route::get('/membresias', function () {
+    return view('membresias');
+})->name('membresias.index');
+
+// HISTORIAL DE VENTAS
+Route::get('/historial', function () {
+    return view('historialv');
+})->name('historial.index');
+
+// CORTE DE CAJA
+Route::get('/corte', function () {
+    return view('corte');
+})->name('corte.index');
+
+// REPORTES
+Route::get('/reportes', function () {
+    return view('reportes');
+})->name('reportes.index');
+
+// LOGOUT (simulación de cierre de sesión)
+Route::get('/logout', function () {
+    return redirect('/login');
+})->name('logout');
+
