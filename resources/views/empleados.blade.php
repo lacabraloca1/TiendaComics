@@ -20,7 +20,7 @@
                 <th class="p-3">ACCIONES</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="empleadosTabla">
             <tr class="bg-gray-900 text-center">
                 <td class="p-3">1</td>
                 <td class="p-3">Carlos Ramírez</td>
@@ -39,17 +39,65 @@
 <div id="modalNuevoEmpleado" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
     <div class="bg-white p-5 rounded shadow-lg text-black w-96">
         <h2 class="text-xl font-bold mb-4">Agregar Empleado</h2>
-        <input type="text" placeholder="Nombre" class="w-full p-2 border rounded mb-3">
-        <input type="email" placeholder="Email" class="w-full p-2 border rounded mb-3">
+
+        <label class="block text-gray-700 font-medium">Nombre</label>
+        <input type="text" id="empleadoNombre" placeholder="Nombre" class="w-full p-2 border rounded mb-3">
+
+        <label class="block text-gray-700 font-medium">Email</label>
+        <input type="email" id="empleadoEmail" placeholder="Email" class="w-full p-2 border rounded mb-3">
+
+        <label class="block text-gray-700 font-medium">Rol</label>
+        <select id="empleadoRol" class="w-full p-2 border rounded mb-3">
+            <option value="Cajero">Cajero</option>
+            <option value="Supervisor">Supervisor</option>
+            <option value="Administrador">Administrador</option>
+        </select>
+
         <div class="flex justify-end gap-2">
             <button class="bg-gray-500 text-white px-3 py-1 rounded" onclick="closeModal('modalNuevoEmpleado')">Cancelar</button>
-            <button class="bg-green-600 text-white px-3 py-1 rounded">Registrar</button>
+            <button class="bg-green-600 text-white px-3 py-1 rounded" onclick="agregarEmpleado()">Registrar</button>
         </div>
     </div>
 </div>
 
+<!-- JavaScript para manejar el registro de empleados -->
 <script>
-    function openModal(modalId) { document.getElementById(modalId).classList.remove("hidden"); }
-    function closeModal(modalId) { document.getElementById(modalId).classList.add("hidden"); }
+    function openModal(modalId) {
+        document.getElementById(modalId).classList.remove("hidden");
+    }
+
+    function closeModal(modalId) {
+        document.getElementById(modalId).classList.add("hidden");
+    }
+
+    function agregarEmpleado() {
+        let nombre = document.getElementById('empleadoNombre').value;
+        let email = document.getElementById('empleadoEmail').value;
+        let rol = document.getElementById('empleadoRol').value;
+
+        if (!nombre || !email) {
+            alert("Por favor ingresa todos los datos.");
+            return;
+        }
+
+        let tabla = document.getElementById('empleadosTabla');
+        let newRow = document.createElement('tr');
+        newRow.classList.add("bg-gray-900", "text-center");
+
+        newRow.innerHTML = `
+            <td class="p-3">${tabla.children.length + 1}</td>
+            <td class="p-3">${nombre}</td>
+            <td class="p-3">${email}</td>
+            <td class="p-3 text-blue-400">${rol}</td>
+            <td class="p-3">
+                <button class="bg-blue-500 text-white px-3 py-1 rounded" onclick="openModal('modalEditarEmpleado')">✏️ Editar</button>
+                <button class="bg-red-600 text-white px-3 py-1 rounded" onclick="openModal('modalEliminarEmpleado')">❌ Eliminar</button>
+            </td>
+        `;
+
+        tabla.appendChild(newRow);
+        closeModal('modalNuevoEmpleado');
+    }
 </script>
+
 @endsection

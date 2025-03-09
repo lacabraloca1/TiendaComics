@@ -9,13 +9,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" />
 
-    <script>
-        // Redirección si el usuario no está autenticado (Mockup)
-        if (!localStorage.getItem("user_authenticated")) {
-            window.location.href = "{{ route('login') }}";
-        }
-    </script>
-
     @yield('styles')
 </head>
 <body class="bg-gray-900 text-white flex h-screen">
@@ -26,16 +19,14 @@
             <h1 class="text-lg font-bold mb-5">Multiverso Comics</h1>
             <nav>
                 <ul>
-                    <li class="mb-3"><a href="{{ route('caja.index') }}" class="text-gray-400 hover:text-white">📦 Ventas</a></li>
-                    <li class="mb-3"><a href="{{ route('tickets.create') }}" class="text-gray-400 hover:text-white">➕ Nuevo Ticket</a></li>
+                    <li class="mb-3"><a href="{{ route('caja.index') }}" class="text-gray-400 hover:text-white">📦 Caja</a></li>
                     <li class="mb-3"><a href="{{ route('devoluciones.index') }}" class="text-gray-400 hover:text-white">🔄 Devoluciones</a></li>
                     <li class="mb-3"><a href="{{ route('proveedores.index') }}" class="text-gray-400 hover:text-white">📦 Proveedores</a></li>
                     <li class="mb-3"><a href="{{ route('empleados.index') }}" class="text-gray-400 hover:text-white">👥 Empleados</a></li>
-                    <li class="mb-3"><a href="{{ route('envios.index') }}" class="text-gray-400 hover:text-white">🚚 Envíos</a></li>
                     <li class="mb-3"><a href="{{ route('membresias.index') }}" class="text-gray-400 hover:text-white">🎫 Membresías</a></li>
                     <li class="mb-3"><a href="{{ route('historial.index') }}" class="text-gray-400 hover:text-white">📜 Hist. Ventas</a></li>
                     <li class="mb-3"><a href="{{ route('corte.index') }}" class="text-gray-400 hover:text-white">💰 Corte de caja</a></li>
-                    <li class="mb-3"><a href="{{ route('reportes.index') }}" class="text-gray-400 hover:text-white">📊 Reportes</a></li>
+                    <li class="mb-3"><a href="{{ route('notificaciones.index') }}" class="text-yellow-400 hover:text-white">🔔 Notificaciones</a></li>
                     <li class="mb-3">
                         <a href="#" onclick="logout()" class="text-red-400 hover:text-white">🚪 Cerrar sesión</a>
                     </li>

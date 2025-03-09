@@ -64,6 +64,11 @@ Route::get('/reportes', function () {
     return view('reportes');
 })->name('reportes.index');
 
+// NOTIFICACIONES
+Route::get('/notificaciones', function () {
+    return view('notificaciones');
+})->name('notificaciones.index');
+
 // LOGOUT (simulación de cierre de sesión)
 Route::get('/logout', function () {
     return redirect('/login');

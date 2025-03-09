@@ -28,7 +28,11 @@
                 <td class="p-3">ARTEMIO</td>
                 <td class="p-3">$4000</td>
                 <td class="p-3">
-                    <button class="bg-blue-500 text-white px-3 py-1 rounded" onclick="openModal('modalVerVenta')">👁️ Ver</button>
+                    <button class="bg-blue-500 text-white px-3 py-1 rounded" onclick="openVentaModal('445877', 'ARTEMIO', '04/05/2025', '$4000', 'Juan Pérez', [
+                        {nombre: 'Producto 1', precio: '$2000'},
+                        {nombre: 'Producto 2', precio: '$1500'},
+                        {nombre: 'Producto 3', precio: '$500'}
+                    ])">👁️ Ver</button>
                     <button class="bg-yellow-500 text-white px-3 py-1 rounded" onclick="openModal('modalReimprimirTicket')">🖨️ Reimprimir</button>
                     <button class="bg-red-600 text-white px-3 py-1 rounded" onclick="openModal('modalCancelarVenta')">❌ Cancelar</button>
                 </td>
@@ -44,17 +48,14 @@
     <div class="bg-white p-5 rounded shadow-lg text-black w-96">
         <h2 class="text-xl font-bold mb-4">Detalles de Venta</h2>
 
-        <p><strong>Folio:</strong> 445877</p>
-        <p><strong>Cliente:</strong> Artemio</p>
-        <p><strong>Fecha y Hora:</strong> 04/05/2025</p>
-        <p><strong>Total:</strong> $4000</p>
+        <p><strong>Folio:</strong> <span id="venta-folio"></span></p>
+        <p><strong>Cliente:</strong> <span id="venta-cliente"></span></p>
+        <p><strong>Fecha y Hora:</strong> <span id="venta-fecha"></span></p>
+        <p><strong>Total:</strong> <span id="venta-total"></span></p>
+        <p><strong>Empleado:</strong> <span id="venta-empleado"></span></p>
 
         <h3 class="text-lg font-bold mt-4">Productos:</h3>
-        <ul class="list-disc pl-5">
-            <li>Producto 1 - $2000</li>
-            <li>Producto 2 - $1500</li>
-            <li>Producto 3 - $500</li>
-        </ul>
+        <ul id="venta-productos" class="list-disc pl-5"></ul>
 
         <div class="flex justify-end gap-2 mt-4">
             <button class="bg-gray-500 text-white px-3 py-1 rounded" onclick="closeModal('modalVerVenta')">Cerrar</button>
@@ -96,6 +97,25 @@
 
     function closeModal(modalId) {
         document.getElementById(modalId).classList.add("hidden");
+    }
+
+    function openVentaModal(folio, cliente, fecha, total, empleado, productos) {
+        document.getElementById('venta-folio').textContent = folio;
+        document.getElementById('venta-cliente').textContent = cliente;
+        document.getElementById('venta-fecha').textContent = fecha;
+        document.getElementById('venta-total').textContent = total;
+        document.getElementById('venta-empleado').textContent = empleado;
+
+        let productosLista = document.getElementById('venta-productos');
+        productosLista.innerHTML = ''; // Limpiar lista de productos
+
+        productos.forEach(producto => {
+            let item = document.createElement('li');
+            item.textContent = `${producto.nombre} - ${producto.precio}`;
+            productosLista.appendChild(item);
+        });
+
+        openModal('modalVerVenta');
     }
 </script>
 

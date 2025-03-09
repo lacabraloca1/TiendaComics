@@ -57,77 +57,26 @@
     </table>
 </div>
 
-<!-- Botones de Acción -->
-<div class="mt-5 flex justify-between">
-    <button class="bg-red-600 text-white p-2 rounded-md" onclick="openModal('modalCancelarVenta')">❌ Cancelar venta</button>
-    <button class="bg-green-600 text-white p-2 rounded-md" onclick="openModal('modalPagar')">💵 Pagar</button>
-</div>
-
-<!-- ======================== MODALS ======================== -->
-
-<!-- Modal: Agregar Producto -->
-<div id="modalAgregarProducto" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-    <div class="bg-white p-5 rounded shadow-lg text-black w-96">
-        <h2 class="text-xl font-bold mb-4">Agregar Producto</h2>
-        <input type="text" placeholder="Código de barras" class="w-full p-2 border rounded mb-3">
-        <input type="text" placeholder="Descripción" class="w-full p-2 border rounded mb-3">
-        <input type="number" placeholder="Cantidad" class="w-full p-2 border rounded mb-3">
-        <input type="number" placeholder="Precio" class="w-full p-2 border rounded mb-3">
-        <div class="flex justify-end gap-2">
-            <button class="bg-gray-500 text-white px-3 py-1 rounded" onclick="closeModal('modalAgregarProducto')">Cancelar</button>
-            <button class="bg-blue-500 text-white px-3 py-1 rounded">Agregar</button>
-        </div>
-    </div>
-</div>
-
-<!-- Modal: Editar Producto -->
-<div id="modalEditarProducto" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-    <div class="bg-white p-5 rounded shadow-lg text-black w-96">
-        <h2 class="text-xl font-bold mb-4">Editar Producto</h2>
-        <input type="text" value="123456789" class="w-full p-2 border rounded mb-3">
-        <input type="text" value="Producto Ejemplo" class="w-full p-2 border rounded mb-3">
-        <input type="number" value="2" class="w-full p-2 border rounded mb-3">
-        <input type="number" value="200" class="w-full p-2 border rounded mb-3">
-        <div class="flex justify-end gap-2">
-            <button class="bg-gray-500 text-white px-3 py-1 rounded" onclick="closeModal('modalEditarProducto')">Cancelar</button>
-            <button class="bg-yellow-500 text-white px-3 py-1 rounded">Guardar</button>
-        </div>
-    </div>
-</div>
-
-<!-- Modal: Cancelar Venta -->
-<div id="modalCancelarVenta" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-    <div class="bg-white p-5 rounded shadow-lg text-black w-96">
-        <h2 class="text-xl font-bold mb-4">¿Cancelar esta venta?</h2>
-        <p>Esta acción no se puede deshacer.</p>
-        <div class="flex justify-end gap-2 mt-4">
-            <button class="bg-gray-500 text-white px-3 py-1 rounded" onclick="closeModal('modalCancelarVenta')">No</button>
-            <button class="bg-red-600 text-white px-3 py-1 rounded">Sí, Cancelar</button>
-        </div>
-    </div>
-</div>
-
-<!-- Modal: Pagar -->
-<div id="modalPagar" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-    <div class="bg-white p-5 rounded shadow-lg text-black w-96">
-        <h2 class="text-xl font-bold mb-4">Finalizar Venta</h2>
-        <p>Total a pagar: <span class="font-bold">$200</span></p>
-        <input type="number" placeholder="Monto recibido" class="w-full p-2 border rounded mt-3">
-        <div class="flex justify-end gap-2 mt-4">
-            <button class="bg-gray-500 text-white px-3 py-1 rounded" onclick="closeModal('modalPagar')">Cancelar</button>
-            <button class="bg-green-600 text-white px-3 py-1 rounded">💵 Pagar</button>
-        </div>
-    </div>
-</div>
-<!-- Modal: Nuevo Ticket -->
+<!-- Modal: Nuevo Ticket con búsqueda de cliente -->
 <div id="modalNuevoTicket" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
     <div class="bg-white p-5 rounded shadow-lg text-black w-96">
         <h2 class="text-xl font-bold mb-4">Crear Nuevo Ticket</h2>
         
-        <label class="block text-gray-700 font-medium">Cliente (Opcional)</label>
-        <input type="text" placeholder="Nombre del Cliente" class="w-full p-2 border rounded mb-3">
+        <!-- Buscador de clientes con autocompletado -->
+        <label class="block text-gray-700 font-medium">Buscar cliente (Opcional)</label>
+        <input type="text" id="client-search" placeholder="Escribe el nombre del cliente..." class="w-full p-2 border rounded mb-3" autocomplete="off">
+        
+        <!-- Lista desplegable de sugerencias -->
+        <ul id="client-list" class="lista-sugerencias bg-white border rounded shadow-md absolute z-10 w-80" style="display: none;"></ul>
 
-        <label class="block text-gray-700 font-medium">Fecha</label>
+        <!-- Información del cliente seleccionado -->
+        <div id="client-info" class="hidden mt-3">
+            <p><strong>Nombre:</strong> <span id="client-name"></span></p>
+            <p><strong>Email:</strong> <span id="client-email"></span></p>
+            <p><strong>Membresía:</strong> <span id="client-membership"></span></p>
+        </div>
+
+        <label class="block text-gray-700 font-medium mt-3">Fecha</label>
         <input type="date" value="{{ now()->format('Y-m-d') }}" class="w-full p-2 border rounded mb-3">
 
         <label class="block text-gray-700 font-medium">Método de Pago</label>
@@ -148,14 +97,82 @@
     </div>
 </div>
 
+<!-- JavaScript para autocompletado -->
 <script>
-    function openModal(modalId) {
-        document.getElementById(modalId).classList.remove("hidden");
-    }
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('client-search');
+    const suggestionsList = document.getElementById('client-list');
+    const clientInfoDiv = document.getElementById('client-info');
+    const clientNameSpan = document.getElementById('client-name');
+    const clientEmailSpan = document.getElementById('client-email');
+    const clientMembershipSpan = document.getElementById('client-membership');
 
-    function closeModal(modalId) {
-        document.getElementById(modalId).classList.add("hidden");
-    }
+    let clientsData = [
+        { nombre: "Juan Pérez", email: "juan@example.com", membresia: "Básica" },
+        { nombre: "María López", email: "maria@example.com", membresia: "Pro" },
+        { nombre: "Carlos Ramírez", email: "carlos@example.com", membresia: "Básica" },
+        { nombre: "Ana Torres", email: "ana@example.com", membresia: "Pro" }
+    ];
+
+    // Evento de entrada en el campo de búsqueda
+    searchInput.addEventListener('input', () => {
+        const query = searchInput.value.trim().toLowerCase();
+        clientInfoDiv.classList.add('hidden');
+
+        if (query === '') {
+            suggestionsList.innerHTML = '';
+            suggestionsList.style.display = 'none';
+            return;
+        }
+
+        // Filtrar los clientes cuyo nombre coincida parcialmente
+        const resultados = clientsData.filter(cliente =>
+            cliente.nombre.toLowerCase().includes(query)
+        );
+
+        suggestionsList.innerHTML = '';
+        if (resultados.length === 0) {
+            suggestionsList.style.display = 'none';
+            return;
+        }
+
+        suggestionsList.style.display = 'block';
+        resultados.forEach(cliente => {
+            const item = document.createElement('li');
+            item.textContent = cliente.nombre;
+            item.classList.add("cursor-pointer", "p-2", "hover:bg-gray-200");
+            
+            // Evento de clic en una sugerencia
+            item.addEventListener('click', () => {
+                searchInput.value = cliente.nombre;
+                suggestionsList.style.display = 'none';
+
+                clientNameSpan.textContent = cliente.nombre;
+                clientEmailSpan.textContent = cliente.email;
+                clientMembershipSpan.textContent = cliente.membresia;
+                clientInfoDiv.classList.remove('hidden');
+            });
+
+            suggestionsList.appendChild(item);
+        });
+    });
+
+    // Ocultar la lista si se hace clic fuera
+    document.addEventListener('click', (e) => {
+        if (!searchInput.contains(e.target) && !suggestionsList.contains(e.target)) {
+            suggestionsList.style.display = 'none';
+        }
+    });
+});
+
+// Funciones para abrir y cerrar modales
+function openModal(modalId) {
+    document.getElementById(modalId).classList.remove("hidden");
+}
+
+function closeModal(modalId) {
+    document.getElementById(modalId).classList.add("hidden");
+}
 </script>
 
 @endsection
