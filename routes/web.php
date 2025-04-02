@@ -49,3 +49,49 @@ Route::get('/planes', function () {
 Route::get('/login', function () {
     return view('login');
 });
+
+
+
+Route::get('/home', function () {
+    return view('home');
+});
+
+Route::get('/catalogo', function () {
+    return view('catalogo');
+});
+
+Route::get('/producto', function () {
+    return view('producto');
+});
+
+Route::get('/carrito', function () {
+    return view('carrito');
+});
+
+Route::get('/checkout', function () {
+    return view('checkout');
+});
+
+Route::get('/confirmacion', function () {
+    return view('confirmacion');
+});
+
+Route::get('/perfil', function () {
+    return view('perfil');
+});
+
+Route::get('/editar_perfil', function () {
+    return view('editar_perfil');
+});
+
+Route::get('/mis_pedidos', function () {
+    return view('mis_pedidos');
+});
+
+Route::get('/contacto', function () {
+    return view('contacto');
+});
+
+Route::get('/carrito', function () {
+    return view('carrito');
+});
