@@ -1,38 +1,68 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
+
+// RUTA PRINCIPAL
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('caja.index');
 });
 
-Route::get('/inventario', function () {
-    return view('inventario');
-});
+// LOGIN
+Route::get('/login', function () {
+    return view('login');
+})->name('login');
 
+// CAJA
 Route::get('/caja', function () {
     return view('caja');
-});
+})->name('caja.index');
 
-Route::get('/historialv', function () {
-    return view('historialv');
-});
+// TICKETS
+Route::get('/tickets/nuevo', function () {
+    return view('nuevo_ticket');
+})->name('tickets.create');
 
+// DEVOLUCIONES
+Route::get('/devoluciones', function () {
+    return view('devoluciones');
+})->name('devoluciones.index');
+
+// PROVEEDORES
 Route::get('/proveedores', function () {
     return view('proveedores');
-});
+})->name('proveedores.index');
 
+// EMPLEADOS
+Route::get('/empleados', function () {
+    return view('empleados');
+})->name('empleados.index');
+
+// ENVÍOS
 Route::get('/envios', function () {
     return view('envios');
-});
+})->name('envios.index');
 
-Route::get('/pedidos', function () {
-    return view('pedidos');
-});
+// MEMBRESÍAS
+Route::get('/membresias', function () {
+    return view('membresias');
+})->name('membresias.index');
 
+// HISTORIAL DE VENTAS
+Route::get('/historial', function () {
+    return view('historialv');
+})->name('historial.index');
+
+// CORTE DE CAJA
+Route::get('/corte', function () {
+    return view('corte');
+})->name('corte.index');
+
+// REPORTES
 Route::get('/reportes', function () {
     return view('reportes');
-});
+})->name('reportes.index');
 
 Route::get('/modificarcli', function () {
     return view('modificarcli');
@@ -48,50 +78,4 @@ Route::get('/planes', function () {
 
 Route::get('/login', function () {
     return view('login');
-});
-
-
-
-Route::get('/home', function () {
-    return view('home');
-});
-
-Route::get('/catalogo', function () {
-    return view('catalogo');
-});
-
-Route::get('/producto', function () {
-    return view('producto');
-});
-
-Route::get('/carrito', function () {
-    return view('carrito');
-});
-
-Route::get('/checkout', function () {
-    return view('checkout');
-});
-
-Route::get('/confirmacion', function () {
-    return view('confirmacion');
-});
-
-Route::get('/perfil', function () {
-    return view('perfil');
-});
-
-Route::get('/editar_perfil', function () {
-    return view('editar_perfil');
-});
-
-Route::get('/mis_pedidos', function () {
-    return view('mis_pedidos');
-});
-
-Route::get('/contacto', function () {
-    return view('contacto');
-});
-
-Route::get('/carrito', function () {
-    return view('carrito');
 });
