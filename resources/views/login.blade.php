@@ -10,27 +10,29 @@
     <div class="bg-gray-800 p-8 rounded-lg shadow-md w-96 text-center">
         <img src="logo.png" alt="ComicStore Logo" class="mx-auto w-16 h-16 mb-4">
         <h1 class="text-xl font-bold mb-4 text-blue-400">COMICSTORE</h1>
-        
         <h2 class="text-lg font-semibold mb-4">Inicia sesión</h2>
-        
-        <form>
+        <form method="POST" action="{{ route('login') }}">
+            @csrf
             <div class="mb-4 text-left">
                 <label class="block text-gray-300">Correo electrónico</label>
-                <input type="email" placeholder="name@flowbite.com" class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-700 text-white">
+                <input type="email" name="correo" placeholder="name@flowbite.com" class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-700 text-white">
             </div>
             <div class="mb-4 text-left">
                 <label class="block text-gray-300">Contraseña</label>
-                <input type="password" placeholder="********" class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-700 text-white">
+                <input type="password" name="password" placeholder="********" class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-700 text-white">
             </div>
             <div class="flex justify-between items-center mb-4 text-sm">
                 <a href="#" class="text-blue-400 hover:underline">¿Olvidaste tu contraseña?</a>
                 <label class="flex items-center">
-                    <input type="checkbox" class="mr-2">
+                    <input type="checkbox" name="remember" class="mr-2">
                     Recordarme
                 </label>
             </div>
             <button type="submit" class="bg-blue-600 text-white px-4 py-2 w-full rounded-md hover:bg-blue-700">Entrar</button>
         </form>
+        <div class="mt-4">
+            <a href="{{ route('register.form') }}" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700">Registrarse</a>
+        </div>
     </div>
     
     <footer class="mt-8 text-gray-500 flex gap-5 text-2xl">

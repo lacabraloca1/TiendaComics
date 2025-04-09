@@ -7,47 +7,23 @@
     <h2 class="text-2xl font-bold">🔔 Notificaciones de Stock</h2>
 </div>
 
-<!-- Tabla de Productos con Bajo Stock -->
-<div class="mt-5">
-    <table class="w-full border-collapse bg-gray-800 text-white">
-        <thead>
-            <tr class="bg-gray-700">
-                <th class="p-3">ID</th>
-                <th class="p-3">PRODUCTO</th>
-                <th class="p-3">CANTIDAD DISPONIBLE</th>
-                <th class="p-3">ESTADO</th>
-                <th class="p-3">ACCIONES</th>
-            </tr>
-        </thead>
-        <tbody id="productosTabla">
-            <tr class="bg-gray-900 text-center">
-                <td class="p-3">1</td>
-                <td class="p-3">Cómic Spiderman #25</td>
-                <td class="p-3 text-red-400">2 unidades</td>
-                <td class="p-3 text-yellow-400">Stock Bajo</td>
-                <td class="p-3">
-                    <button class="bg-blue-500 text-white px-3 py-1 rounded" onclick="marcarRevisado(this)">✔ Marcar como Revisado</button>
-                </td>
-            </tr>
-            <tr class="bg-gray-900 text-center">
-                <td class="p-3">2</td>
-                <td class="p-3">Cómic Batman #10</td>
-                <td class="p-3 text-red-400">1 unidad</td>
-                <td class="p-3 text-yellow-400">Stock Bajo</td>
-                <td class="p-3">
-                    <button class="bg-blue-500 text-white px-3 py-1 rounded" onclick="marcarRevisado(this)">✔ Marcar como Revisado</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+<div class="mt-5 grid grid-cols-1 gap-4">
+    @forelse($notificaciones as $notificacion)
+        <div class="bg-gray-800 p-4 rounded-lg shadow-md flex justify-between items-center">
+            <div>
+                <p class="text-white font-medium">{{ $notificacion->Descripcion }}</p>
+                <p class="text-gray-400 text-sm">Fecha: {{ $notificacion->fecha_creacion }}</p>
+            </div>
+            <form action="{{ route('notificaciones.markAsSeen', $notificacion->id) }}" method="POST">
+                @csrf
+                @method('PUT')
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+                    Marcar como visto
+                </button>
+            </form>
+        </div>
+    @empty
+        <p class="text-white">No hay notificaciones pendientes.</p>
+    @endforelse
 </div>
-
-<script>
-    function marcarRevisado(button) {
-        let row = button.parentNode.parentNode;
-        row.querySelector("td:nth-child(4)").innerHTML = `<span class="text-green-400">✔ Revisado</span>`;
-        button.remove();
-    }
-</script>
-
 @endsection
